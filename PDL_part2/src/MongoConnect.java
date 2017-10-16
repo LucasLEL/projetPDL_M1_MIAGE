@@ -11,7 +11,11 @@ import java.util.Properties;
 import org.bson.Document;
 
 
-
+/**
+ * 
+ * @author PDL_GROUPE7
+ *
+ */
 public class MongoConnect {
 
 	public static void main(String[] args) {
