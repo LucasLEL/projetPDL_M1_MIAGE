@@ -59,8 +59,14 @@ public class GestionnaireCategories {
 
 		for (int i = 0; i < jsonArrayOfCategories.length(); i++) {
 		    JSONObject row = jsonArrayOfCategories.getJSONObject(i);
-		    String categoryName = row.getString("id");
-		    Document theMongoCategory = new Document("name", categoryName);
+		    String keyCategory = row.getString("id");
+		    String nameCategory = row.getString("name");
+		    int countProductsCategory = row.getInt("products");
+		    
+		    Document theMongoCategory = new Document("key", keyCategory);
+		    theMongoCategory.append("name", nameCategory);
+		    theMongoCategory.append("count_products", countProductsCategory);
+		    
 		    arrayListOfCategories.add(theMongoCategory);
 		}
 		return arrayListOfCategories;
