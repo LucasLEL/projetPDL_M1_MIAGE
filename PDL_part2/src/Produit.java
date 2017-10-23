@@ -12,7 +12,7 @@ public class Produit {
 		
 		
 		BasicDBObject regexQuery = new BasicDBObject();
-		regexQuery.put("categories_tags", new BasicDBObject("$regex", "en:"+valeurCliquerDansListCategories));
+		regexQuery.put("categories_tags", new BasicDBObject("$regex", valeurCliquerDansListCategories));
 		MongoCursor<Document> cursor = collectionProduct.find().limit(3).iterator();
 		cursor = collectionProduct.find(regexQuery).iterator();
 //		System.out.println("\n Exemple de produits dans la collection categories, contenant le mot : "+ " en:"+valeurCliquerDansListCategories);

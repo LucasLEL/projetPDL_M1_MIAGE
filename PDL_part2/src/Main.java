@@ -91,7 +91,9 @@ public class Main {
 	
 	public static void actionBoutonValider(){
 		//Produits
-		prod.affichageProduit(ihm.getProduit(), collectionProduct, glp);
+		String realNameCat = glc.getNomAvantSub();
+		
+		prod.affichageProduit(realNameCat, collectionProduct, glp);
 	}
 	
 	public static void createCategoriesCollection(){

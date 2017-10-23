@@ -88,6 +88,8 @@ public class IhmTest {
 				{
 					resutats.setText(resutats.getText() + " // " + Main.glp.getElement(i));
 				}
+				
+				System.out.println("done");
 			}
 
 		});
