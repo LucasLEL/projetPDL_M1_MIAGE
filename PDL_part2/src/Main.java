@@ -40,10 +40,10 @@ public class Main {
 		categoriesCollection = databaseOff.getCollection("categories");
 		collectionProduct = databaseOff.getCollection("products");
 		
-		//Categorie
-		cat.rechercherMotCle("milks", categoriesCollection, glc);
+
 		//Creation Fenetre.
 		IhmTest.recuperationData();
+		
 		
 		/***********************************Création d'une collection de catégories*****************************************/
 		//Pas appellé a chaque fois, juste quand l'utilisateur veut mettre à jour la collection de categories
@@ -93,6 +93,11 @@ public class Main {
 //			    cursor.close();
 //		}
 			
+	}
+	
+	public static void actionBouton(){
+		//Categorie
+		cat.rechercherMotCle(ihm.getRecherche(), categoriesCollection, glc);
 	}
 	
 	public static void createCategoriesCollection(){

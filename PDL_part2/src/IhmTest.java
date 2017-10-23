@@ -1,4 +1,5 @@
 import java.awt.BorderLayout;
+import java.awt.Button;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -17,27 +18,47 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 public class IhmTest {
+	static String recherche = "";
+	
+	public String getRecherche(){
+		return recherche;
+	}
 
 	@SuppressWarnings("unused")
 	static void recuperationData() throws ClassNotFoundException, InstantiationException, IllegalAccessException,
 			UnsupportedLookAndFeelException {
 		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		JFrame frame = new JFrame();
+		JTextField txtRecherche = new JTextField();
+		Button btRecherche = new Button("Rechercher");
 		frame.setTitle("PDL - OFF");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setBounds(200, 200, 500, 400);
-
-		// TEST
-		System.out.println(Main.glc.getListCategories());
-
 		JTextField txtInput = new JTextField();
-		setupAutoComplete(txtInput,Main.glc.getListCategories());
+		txtInput.setVisible(false);
+		setupAutoComplete(txtInput, Main.glc.getListCategories());
 		txtInput.setColumns(30);
 		frame.getContentPane().setLayout(new FlowLayout());
+		frame.getContentPane().add(txtRecherche);
+		frame.getContentPane().add(btRecherche);
+		txtRecherche.setColumns(30);
 		frame.getContentPane().add(txtInput, BorderLayout.NORTH);
 		frame.setVisible(true);
-	}
+		
+		btRecherche.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent ev) {
+				txtInput.setVisible(true);
+				txtInput.setText("");
+				frame.revalidate();
+				recherche = txtRecherche.getText();
+				Main.actionBouton();
+			}
 
+		});
+		
+	}
+	
 	private static boolean isAdjusting(JComboBox cbInput) {
 		if (cbInput.getClientProperty("is_adjusting") instanceof Boolean) {
 			return (Boolean) cbInput.getClientProperty("is_adjusting");

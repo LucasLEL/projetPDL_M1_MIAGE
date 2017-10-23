@@ -14,6 +14,7 @@ public class Categorie {
 		cursor = categoriesCollection.find(regexQuery).iterator();
 		System.out.println("\n Exemple de produits dans la collection categories, contenant le mot :"
 				+ valeurSaisieParUtilisateur);
+		glc.cleanListCategorie();
 		try {
 			while (cursor.hasNext()) {
 				glc.setListCategories(cursor.next().getString("key"));
