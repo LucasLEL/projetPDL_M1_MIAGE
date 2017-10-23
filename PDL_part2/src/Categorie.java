@@ -8,12 +8,11 @@ public class Categorie {
 
 	public void rechercherMotCle(String valeurSaisieParUtilisateur, MongoCollection<Document> categoriesCollection,
 			GestionListeCategorie glc) {
+		
 		BasicDBObject regexQuery = new BasicDBObject();
 		regexQuery.put("name", new BasicDBObject("$regex", valeurSaisieParUtilisateur));
 		MongoCursor<Document> cursor = categoriesCollection.find().limit(3).iterator();
 		cursor = categoriesCollection.find(regexQuery).iterator();
-		System.out.println("\n Exemple de produits dans la collection categories, contenant le mot :"
-				+ valeurSaisieParUtilisateur);
 		glc.cleanListCategorie();
 		try {
 			while (cursor.hasNext()) {

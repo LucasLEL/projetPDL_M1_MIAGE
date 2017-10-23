@@ -21,10 +21,14 @@ public class Main {
 	private static MongoCollection<Document> collectionProduct;
 	//Creation de l'objet GestionListeCategorie
 	static GestionListeCategorie glc = new GestionListeCategorie();
-	//Creation de l'objet IhmTest
+	//Creation de l'objet GestionListeProduit
+	static GestionListeProduit glp = new GestionListeProduit();
+	//Creation de l'objet IhmTest.
 	static IhmTest ihm = new IhmTest();
-	//Creation de l'objet Categorie
+	//Creation de l'objet Categorie.
 	static Categorie cat = new Categorie();
+	//Creation de l'objet Produit.
+	static Produit prod = new Produit();
 
 	public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
 		databaseOff=null;
@@ -77,27 +81,17 @@ public class Main {
 		//A partir de ces résultats de categories, l'utilisateur clique sur "Corsican beers"
 		//Ci-dessous l'affichage des produits de cette selection
 		
-//		String valeurCliquerDansListCategories = "en:powdered-almond-milks";
-//		
-//		BasicDBObject regexQuery1 = new BasicDBObject();
-//		//regexQuery1.put("categories_tags", valeurCliquerDansListCategories);
-//		regexQuery1.put("categories_tags", valeurCliquerDansListCategories);
-//		
-//		cursor = collectionProduct.find(regexQuery1).iterator();
-//		System.out.println("\n Exemple de tous les produits de la categorie : " +valeurCliquerDansListCategories);
-//		try {
-//		    while (cursor.hasNext()) {
-//		    	System.out.println(cursor.next().toJson());
-//		    } 
-//		}finally {
-//			    cursor.close();
-//		}
 			
 	}
 	
 	public static void actionBouton(){
 		//Categorie
 		cat.rechercherMotCle(ihm.getRecherche(), categoriesCollection, glc);
+	}
+	
+	public static void actionBoutonValider(){
+		//Produits
+		prod.affichageProduit(ihm.getProduit(), collectionProduct, glp);
 	}
 	
 	public static void createCategoriesCollection(){

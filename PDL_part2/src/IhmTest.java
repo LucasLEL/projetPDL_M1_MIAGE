@@ -1,5 +1,4 @@
 import java.awt.BorderLayout;
-import java.awt.Button;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -7,11 +6,16 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
 
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.DocumentEvent;
@@ -19,30 +23,45 @@ import javax.swing.event.DocumentListener;
 
 public class IhmTest {
 	static String recherche = "";
+	static String produit = "";
 	
 	public String getRecherche(){
 		return recherche;
 	}
-
+	
+	public String getProduit(){
+		return produit;
+	}
 	@SuppressWarnings("unused")
 	static void recuperationData() throws ClassNotFoundException, InstantiationException, IllegalAccessException,
 			UnsupportedLookAndFeelException {
 		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		JFrame frame = new JFrame();
 		JTextField txtRecherche = new JTextField();
-		Button btRecherche = new Button("Rechercher");
+		JButton btRecherche = new JButton("Rechercher");
+		JButton btValider = new JButton("Valider");
+		JLabel nbResultats = new JLabel("", SwingConstants.CENTER);
+		JLabel resutats = new JLabel();
+		JTextField txtInput = new JTextField();
+		nbResultats.setVerticalAlignment(SwingConstants.TOP);
+		frame.setSize(600, 300);
+		frame.setLocationRelativeTo(null);
 		frame.setTitle("PDL - OFF");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setBounds(200, 200, 500, 400);
-		JTextField txtInput = new JTextField();
+		frame.setLayout(null);
 		txtInput.setVisible(false);
 		setupAutoComplete(txtInput, Main.glc.getListCategories());
 		txtInput.setColumns(30);
 		frame.getContentPane().setLayout(new FlowLayout());
 		frame.getContentPane().add(txtRecherche);
 		frame.getContentPane().add(btRecherche);
+		frame.getContentPane().add(btValider);
 		txtRecherche.setColumns(30);
 		frame.getContentPane().add(txtInput, BorderLayout.NORTH);
+		frame.getContentPane().add(nbResultats);
+		frame.getContentPane().add(resutats);
+//		nbResultats.setBounds(80, 180, 40, 20);
+//		resutats.setBounds(280, 250, 40, 20);
 		frame.setVisible(true);
 		
 		btRecherche.addActionListener(new ActionListener() {
@@ -53,6 +72,22 @@ public class IhmTest {
 				frame.revalidate();
 				recherche = txtRecherche.getText();
 				Main.actionBouton();
+				nbResultats.setText(String.valueOf(Main.glc.getSize()));
+			}
+
+		});
+		
+		btValider.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent ev) {
+				produit = txtInput.getText();
+				
+				Main.actionBoutonValider();				
+				
+				for(int i = 0 ; i < Main.glp.getSize() ; i++)
+				{
+					resutats.setText(resutats.getText() + " // " + Main.glp.getElement(i));
+				}
 			}
 
 		});
