@@ -14,6 +14,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
@@ -36,30 +37,42 @@ public class IhmTest {
 	static void recuperationData() throws ClassNotFoundException, InstantiationException, IllegalAccessException,
 			UnsupportedLookAndFeelException {
 		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		
+		//Création fenetre
 		JFrame frame = new JFrame();
-		JTextField txtRecherche = new JTextField();
-		JButton btRecherche = new JButton("Rechercher");
-		JButton btValider = new JButton("Valider");
-		JLabel nbResultats = new JLabel("", SwingConstants.CENTER);
-		JLabel resutats = new JLabel();
-		JTextField txtInput = new JTextField();
-		nbResultats.setVerticalAlignment(SwingConstants.TOP);
 		frame.setSize(600, 300);
 		frame.setLocationRelativeTo(null);
 		frame.setTitle("PDL - OFF");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(null);
+		
+		
+		//Déclaration des éléments
+		JTextField txtRecherche = new JTextField();
+		JLabel nbResultats = new JLabel("", SwingConstants.CENTER);
+		JButton btRecherche = new JButton("Rechercher");
+		JTextField txtInput = new JTextField();
+		JButton btValider = new JButton("Valider");
+		JLabel resutats = new JLabel();
+		
+		//Caractéristiques
+		txtRecherche.setColumns(30);
+		nbResultats.setVerticalAlignment(SwingConstants.TOP);
 		txtInput.setVisible(false);
 		setupAutoComplete(txtInput, Main.glc.getListCategories());
 		txtInput.setColumns(30);
+		
+		//ajout éléments sur fenetre
 		frame.getContentPane().setLayout(new FlowLayout());
 		frame.getContentPane().add(txtRecherche);
 		frame.getContentPane().add(btRecherche);
 		frame.getContentPane().add(btValider);
-		txtRecherche.setColumns(30);
 		frame.getContentPane().add(txtInput, BorderLayout.NORTH);
 		frame.getContentPane().add(nbResultats);
 		frame.getContentPane().add(resutats);
+		
+		
+		
 //		nbResultats.setBounds(80, 180, 40, 20);
 //		resutats.setBounds(280, 250, 40, 20);
 		frame.setVisible(true);
@@ -72,7 +85,7 @@ public class IhmTest {
 				frame.revalidate();
 				recherche = txtRecherche.getText();
 				Main.actionBouton();
-				nbResultats.setText(String.valueOf(Main.glc.getSize()));
+				nbResultats.setText(String.valueOf(Main.glc.getSize()) + " catégories comportant le mot : " + recherche);
 			}
 
 		});
@@ -82,17 +95,20 @@ public class IhmTest {
 			public void actionPerformed(ActionEvent ev) {
 				produit = txtInput.getText();
 				
-				Main.actionBoutonValider();				
+				System.out.println("act = "+produit);
+				
+				Main.actionBoutonValider(produit);				
 				
 				for(int i = 0 ; i < Main.glp.getSize() ; i++)
 				{
+					System.out.println("Nombre de résultats : "+Main.glp.getSize());
 					resutats.setText(resutats.getText() + " // " + Main.glp.getElement(i));
 				}
 				
 				System.out.println("done");
 			}
 
-		});
+		});	
 		
 	}
 	

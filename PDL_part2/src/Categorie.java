@@ -16,6 +16,9 @@ public class Categorie {
 		glc.cleanListCategorie();
 		try {
 			while (cursor.hasNext()) {
+				System.out.println("cat = "+cursor.next().getString("key"));
+				
+				//ERROR : On ajoute tous les noms 
 				glc.setListCategories(cursor.next().getString("key"));
 			}
 		} finally {

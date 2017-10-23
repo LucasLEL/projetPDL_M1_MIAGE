@@ -89,11 +89,13 @@ public class Main {
 		cat.rechercherMotCle(ihm.getRecherche(), categoriesCollection, glc);
 	}
 	
-	public static void actionBoutonValider(){
+	public static void actionBoutonValider(String produit){
 		//Produits
-		String realNameCat = glc.getNomAvantSub();
+		//String realNameCat = glc.getNomAvantSub();
 		
-		prod.affichageProduit(realNameCat, collectionProduct, glp);
+		//prod.affichageProduit(realNameCat, collectionProduct, glp);
+		prod.affichageProduit(produit, collectionProduct, glp);
+		
 	}
 	
 	public static void createCategoriesCollection(){

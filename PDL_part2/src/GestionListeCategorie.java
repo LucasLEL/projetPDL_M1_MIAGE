@@ -2,11 +2,11 @@ import java.util.ArrayList;
 
 public class GestionListeCategorie {
 	private ArrayList<String> listCategories = new ArrayList<String>();
-	private String nomAvantSub = ""; 
+	//private String nomAvantSub = ""; 
 	
-	public String getNomAvantSub(){
-		return nomAvantSub;
-	}
+//	public String getNomAvantSub(){
+//		return nomAvantSub;
+//	}
 
 	public ArrayList<String> getListCategories() {
 		return listCategories;
@@ -17,8 +17,9 @@ public class GestionListeCategorie {
 	}
 
 	public void setListCategories(String categorie) {
-		this.nomAvantSub = categorie;
-		categorie = categorie.substring(3, categorie.length());
+		//FAUX : 
+		//this.nomAvantSub = categorie;
+		//categorie = categorie.substring(3, categorie.length());
 		this.listCategories.add(categorie);
 	}
 	

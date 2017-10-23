@@ -10,9 +10,10 @@ public class Produit {
 	public void affichageProduit(String valeurCliquerDansListCategories, MongoCollection<Document> collectionProduct,
 			GestionListeProduit glp) {
 		
+		System.out.println(valeurCliquerDansListCategories);
 		
 		BasicDBObject regexQuery = new BasicDBObject();
-		regexQuery.put("categories_tags", new BasicDBObject("$regex", valeurCliquerDansListCategories));
+		regexQuery.put("categories_tags", valeurCliquerDansListCategories);
 		MongoCursor<Document> cursor = collectionProduct.find().limit(3).iterator();
 		cursor = collectionProduct.find(regexQuery).iterator();
 //		System.out.println("\n Exemple de produits dans la collection categories, contenant le mot : "+ " en:"+valeurCliquerDansListCategories);
