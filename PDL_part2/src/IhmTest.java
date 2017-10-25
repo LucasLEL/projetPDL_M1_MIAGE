@@ -15,6 +15,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
@@ -28,6 +29,7 @@ public class IhmTest {
 	JComboBox cbInput;
 	ArrayList<String> items;
 	DefaultComboBoxModel model;
+	static JList listProduits = new JList();
 	
 	public String getRecherche(){
 		return recherche;
@@ -87,10 +89,11 @@ public class IhmTest {
 		frame.getContentPane().setLayout(new FlowLayout());
 		frame.getContentPane().add(txtRecherche);
 		frame.getContentPane().add(btRecherche);
-		frame.getContentPane().add(txtInput, BorderLayout.NORTH);
+		frame.getContentPane().add(txtInput);
 		frame.getContentPane().add(btValider);
 		frame.getContentPane().add(nbResultats);
 		frame.getContentPane().add(nbResultatsProduits);
+		listProduits.setVisibleRowCount(17);
 		
 //		frame.getContentPane().add(resutats);
 		
@@ -121,6 +124,7 @@ public class IhmTest {
 			@SuppressWarnings("null")
 			@Override
 			public void actionPerformed(ActionEvent ev) {
+				listProduits.setListData(new Object[0]);
 				resutats.setText("");
 				categorie = txtInput.getText();
 				System.out.println("act = "+categorie);
@@ -134,9 +138,9 @@ public class IhmTest {
 					tab[i] = Main.glp.getElement(i);
 					
 				}
-				JList listProduits = new JList(tab);
-				listProduits.setPreferredSize(new Dimension(300,300));
+				listProduits.setListData(tab);
 				frame.getContentPane().add(listProduits);
+				frame.add(new JScrollPane(listProduits));
 				nbResultatsProduits.setText("Nombre de résultats : "+ String.valueOf(Main.glp.getSize()));
 				System.out.println("Nombre de résultats : "+ Main.glp.getSize());
 			}
