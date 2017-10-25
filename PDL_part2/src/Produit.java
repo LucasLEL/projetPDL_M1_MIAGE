@@ -14,15 +14,12 @@ public class Produit {
 		
 		BasicDBObject regexQuery = new BasicDBObject();
 		regexQuery.put("categories_tags", valeurCliquerDansListCategories);
-		MongoCursor<Document> cursor = collectionProduct.find().limit(3).iterator();
-		cursor = collectionProduct.find(regexQuery).iterator();
+		 MongoCursor<Document> cursor = collectionProduct.find(regexQuery).iterator();
 //		System.out.println("\n Exemple de produits dans la collection categories, contenant le mot : "+ " en:"+valeurCliquerDansListCategories);
 		glp.cleanListCategorie();
 		
 		try {
 			while (cursor.hasNext()) {
-				
-				//System.out.println(cursor.next().get("product_name"));
 				glp.setListProduit(cursor.next().getString("product_name"));
 			}
 		} finally {

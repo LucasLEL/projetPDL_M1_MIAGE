@@ -3,8 +3,12 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -24,21 +28,24 @@ import javax.swing.event.DocumentListener;
 
 public class IhmTest {
 	static String recherche = "";
-	static String produit = "";
+	static String categorie = "";
+	JComboBox cbInput;
+	ArrayList<String> items;
+	DefaultComboBoxModel model;
 	
 	public String getRecherche(){
 		return recherche;
 	}
 	
-	public String getProduit(){
-		return produit;
+	public String getCategorie(){
+		return categorie;
 	}
 	@SuppressWarnings("unused")
 	static void recuperationData() throws ClassNotFoundException, InstantiationException, IllegalAccessException,
 			UnsupportedLookAndFeelException {
 		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		
-		//Création fenetre
+		//Crï¿½ation fenetre
 		JFrame frame = new JFrame();
 		frame.setSize(600, 300);
 		frame.setLocationRelativeTo(null);
@@ -47,7 +54,7 @@ public class IhmTest {
 		frame.setLayout(null);
 		
 		
-		//Déclaration des éléments
+		//Dï¿½claration des ï¿½lï¿½ments
 		JTextField txtRecherche = new JTextField();
 		JLabel nbResultats = new JLabel("", SwingConstants.CENTER);
 		JButton btRecherche = new JButton("Rechercher");
@@ -55,14 +62,27 @@ public class IhmTest {
 		JButton btValider = new JButton("Valider");
 		JLabel resutats = new JLabel();
 		
-		//Caractéristiques
+		//Caractï¿½ristiques
 		txtRecherche.setColumns(30);
+		
+
+		txtRecherche.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				
+				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+					btRecherche.doClick();
+	            }
+			}
+		});
+		
+		
 		nbResultats.setVerticalAlignment(SwingConstants.TOP);
 		txtInput.setVisible(false);
-		setupAutoComplete(txtInput, Main.glc.getListCategories());
+		setupAutoComplete(txtInput, Main.glc.getListCategoriesName());
 		txtInput.setColumns(30);
 		
-		//ajout éléments sur fenetre
+		//ajout ï¿½lï¿½ments sur fenetre
 		frame.getContentPane().setLayout(new FlowLayout());
 		frame.getContentPane().add(txtRecherche);
 		frame.getContentPane().add(btRecherche);
@@ -81,11 +101,11 @@ public class IhmTest {
 			@Override
 			public void actionPerformed(ActionEvent ev) {
 				txtInput.setVisible(true);
-				txtInput.setText("");
+				txtInput.requestFocus();
 				frame.revalidate();
 				recherche = txtRecherche.getText();
 				Main.actionBouton();
-				nbResultats.setText(String.valueOf(Main.glc.getSize()) + " catégories comportant le mot : " + recherche);
+				nbResultats.setText(String.valueOf(Main.glc.getSize()) + " catÃ©gories comportant le mot : " + recherche);
 			}
 
 		});
@@ -93,23 +113,21 @@ public class IhmTest {
 		btValider.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent ev) {
-				produit = txtInput.getText();
+				categorie = txtInput.getText();
 				
-				System.out.println("act = "+produit);
+				System.out.println("act = "+categorie);
 				
-				Main.actionBoutonValider(produit);				
+				// Retourne le tag liÃ© Ã  un name
+				String tag = Main.glc.getTagFromName(categorie);
+				Main.actionBoutonValider(tag);				
 				
 				for(int i = 0 ; i < Main.glp.getSize() ; i++)
 				{
-					System.out.println("Nombre de résultats : "+Main.glp.getSize());
 					resutats.setText(resutats.getText() + " // " + Main.glp.getElement(i));
 				}
-				
-				System.out.println("done");
+				System.out.println("Nombre de rÃ©sultats : "+Main.glp.getSize());
 			}
-
 		});	
-		
 	}
 	
 	private static boolean isAdjusting(JComboBox cbInput) {
@@ -126,11 +144,13 @@ public class IhmTest {
 	public static void setupAutoComplete(final JTextField txtInput, final ArrayList<String> items) {
 		final DefaultComboBoxModel model = new DefaultComboBoxModel();
 		@SuppressWarnings("unchecked")
+		
 		final JComboBox cbInput = new JComboBox(model) {
 			public Dimension getPreferredSize() {
 				return new Dimension(super.getPreferredSize().width, 0);
 			}
 		};
+		
 		setAdjusting(cbInput, false);
 		for (String item : items) {
 			model.addElement(item);
@@ -148,9 +168,13 @@ public class IhmTest {
 		});
 
 		txtInput.addKeyListener(new KeyAdapter() {
-
 			@Override
 			public void keyPressed(KeyEvent e) {
+				
+				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+					//DÃ©clanche valider
+	            }
+							
 				setAdjusting(cbInput, true);
 				if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 					if (cbInput.isPopupVisible()) {
@@ -169,38 +193,50 @@ public class IhmTest {
 				if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
 					cbInput.setPopupVisible(false);
 				}
-				setAdjusting(cbInput, false);
+				setAdjusting(cbInput, false);		 
 			}
 		});
+		
 		txtInput.getDocument().addDocumentListener(new DocumentListener() {
 			public void insertUpdate(DocumentEvent e) {
-				updateList();
+				updateList(cbInput, items, txtInput, model);
 			}
 
 			public void removeUpdate(DocumentEvent e) {
-				updateList();
+				updateList(cbInput, items, txtInput, model);
 			}
 
 			public void changedUpdate(DocumentEvent e) {
-				updateList();
-			}
-
-			private void updateList() {
-				setAdjusting(cbInput, true);
-				model.removeAllElements();
-				String input = txtInput.getText();
-				if (!input.isEmpty()) {
-					for (String item : items) {
-						if (item.toLowerCase().startsWith(input.toLowerCase())) {
-							model.addElement(item);
-						}
-					}
-				}
-				cbInput.setPopupVisible(model.getSize() > 0);
-				setAdjusting(cbInput, false);
+				updateList(cbInput, items, txtInput, model);
 			}
 		});
+		
+		txtInput.addFocusListener(new FocusListener() {
+		      public void focusGained(FocusEvent e) {
+		    	  updateList(cbInput, items, txtInput, model);
+		      }
+			@Override
+			public void focusLost(FocusEvent arg0) {
+				// TODO Auto-generated method stub
+			}
+		});
+			
+		
 		txtInput.setLayout(new BorderLayout());
 		txtInput.add(cbInput, BorderLayout.SOUTH);
+	}
+	
+	
+	public static void updateList(JComboBox cbInput, ArrayList<String> items, JTextField txtInput, DefaultComboBoxModel model) {
+		setAdjusting(cbInput, true);
+		model.removeAllElements();
+		String input = txtInput.getText();
+		for (String item : items) {
+			if (item.toLowerCase().contains((input.toLowerCase()))) {
+				model.addElement(item);
+			}
+		}
+		cbInput.setPopupVisible(model.getSize() > 0);
+		setAdjusting(cbInput, false);
 	}
 }

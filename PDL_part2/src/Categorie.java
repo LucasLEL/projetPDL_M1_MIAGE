@@ -11,15 +11,12 @@ public class Categorie {
 		
 		BasicDBObject regexQuery = new BasicDBObject();
 		regexQuery.put("name", new BasicDBObject("$regex", valeurSaisieParUtilisateur));
-		MongoCursor<Document> cursor = categoriesCollection.find().limit(3).iterator();
-		cursor = categoriesCollection.find(regexQuery).iterator();
+	    MongoCursor<Document> cursor = categoriesCollection.find(regexQuery).iterator();
 		glc.cleanListCategorie();
 		try {
 			while (cursor.hasNext()) {
-				System.out.println("cat = "+cursor.next().getString("key"));
-				
-				//ERROR : On ajoute tous les noms 
-				glc.setListCategories(cursor.next().getString("key"));
+				Document nextElem = cursor.next();
+				glc.setListCategories(nextElem.getString("name"), nextElem.getString("key"));
 			}
 		} finally {
 			cursor.close();
