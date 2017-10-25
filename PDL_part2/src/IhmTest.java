@@ -8,6 +8,7 @@ import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -130,14 +131,16 @@ public class IhmTest {
 				System.out.println("act = "+categorie);
 				// Retourne le tag lié à un name
 				String tag = Main.glc.getTagFromName(categorie);
-				Main.actionBoutonValider(tag);				
+				Main.actionBoutonValider(tag);
 				String[] tab = new String[Main.glp.getSize()];
+				
 				for(int i = 0 ; i < Main.glp.getSize() ; i++)
 				{
 //					resutats.setText(resutats.getText() + " // " + Main.glp.getElement(i));
 					tab[i] = Main.glp.getElement(i);
 					
 				}
+				//Arrays.sort(tab); tri de la liste -> problème affichage, hypothèse -> caractères spéciaux
 				listProduits.setListData(tab);
 				frame.getContentPane().add(listProduits);
 				frame.add(new JScrollPane(listProduits));
