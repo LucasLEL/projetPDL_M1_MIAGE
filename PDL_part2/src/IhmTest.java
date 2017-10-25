@@ -7,18 +7,14 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
+import javax.swing.JList;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
@@ -47,11 +43,12 @@ public class IhmTest {
 		
 		//Cr�ation fenetre
 		JFrame frame = new JFrame();
-		frame.setSize(600, 300);
+		frame.setSize(500, 450);
 		frame.setLocationRelativeTo(null);
 		frame.setTitle("PDL - OFF");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(null);
+		frame.setResizable(false);
 		
 		
 		//D�claration des �l�ments
@@ -61,6 +58,8 @@ public class IhmTest {
 		JTextField txtInput = new JTextField();
 		JButton btValider = new JButton("Valider");
 		JLabel resutats = new JLabel();
+		JLabel nbResultatsProduits = new JLabel();
+		
 		
 		//Caract�ristiques
 		txtRecherche.setColumns(30);
@@ -79,17 +78,22 @@ public class IhmTest {
 		
 		nbResultats.setVerticalAlignment(SwingConstants.TOP);
 		txtInput.setVisible(false);
+		btValider.setVisible(false);
 		setupAutoComplete(txtInput, Main.glc.getListCategoriesName());
 		txtInput.setColumns(30);
+//		resutats.setPreferredSize(new Dimension(300,100));
 		
 		//ajout �l�ments sur fenetre
 		frame.getContentPane().setLayout(new FlowLayout());
 		frame.getContentPane().add(txtRecherche);
 		frame.getContentPane().add(btRecherche);
-		frame.getContentPane().add(btValider);
 		frame.getContentPane().add(txtInput, BorderLayout.NORTH);
+		frame.getContentPane().add(btValider);
 		frame.getContentPane().add(nbResultats);
-		frame.getContentPane().add(resutats);
+		frame.getContentPane().add(nbResultatsProduits);
+		
+//		frame.getContentPane().add(resutats);
+		
 		
 		
 		
@@ -100,7 +104,10 @@ public class IhmTest {
 		btRecherche.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent ev) {
+				txtInput.setText("");
+				resutats.setText("");
 				txtInput.setVisible(true);
+				btValider.setVisible(true);
 				txtInput.requestFocus();
 				frame.revalidate();
 				recherche = txtRecherche.getText();
@@ -111,21 +118,27 @@ public class IhmTest {
 		});
 		
 		btValider.addActionListener(new ActionListener() {
+			@SuppressWarnings("null")
 			@Override
 			public void actionPerformed(ActionEvent ev) {
+				resutats.setText("");
 				categorie = txtInput.getText();
-				
 				System.out.println("act = "+categorie);
-				
 				// Retourne le tag lié à un name
 				String tag = Main.glc.getTagFromName(categorie);
 				Main.actionBoutonValider(tag);				
-				
+				String[] tab = new String[Main.glp.getSize()];
 				for(int i = 0 ; i < Main.glp.getSize() ; i++)
 				{
-					resutats.setText(resutats.getText() + " // " + Main.glp.getElement(i));
+//					resutats.setText(resutats.getText() + " // " + Main.glp.getElement(i));
+					tab[i] = Main.glp.getElement(i);
+					
 				}
-				System.out.println("Nombre de résultats : "+Main.glp.getSize());
+				JList listProduits = new JList(tab);
+				listProduits.setPreferredSize(new Dimension(300,300));
+				frame.getContentPane().add(listProduits);
+				nbResultatsProduits.setText("Nombre de résultats : "+ String.valueOf(Main.glp.getSize()));
+				System.out.println("Nombre de résultats : "+ Main.glp.getSize());
 			}
 		});	
 	}
