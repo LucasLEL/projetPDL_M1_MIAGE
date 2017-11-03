@@ -28,20 +28,13 @@ public class Produit {
 				Document product = cursor.next();
 				
 				glp.setListProduit(product.getString("product_name"));
-				//Pour afficher les marques +" - "+product.getString("brands")
 			}
 		} finally {
 			cursor.close();
 		}
-		try {
-			getInformationsProduits(valeurCliquerDansListCategories,collectionProduct);
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 	
-	public void getInformationsProduits(String valeurCliquerDansListCategories, MongoCollection<Document> collectionProduct) throws JSONException{
+	public JSONArray getInformationsAffichageProduitsList(String valeurCliquerDansListCategories, MongoCollection<Document> collectionProduct) throws JSONException{
 		
 		BasicDBObject regexQuery = new BasicDBObject();
 		regexQuery.put("categories_tags", valeurCliquerDansListCategories);
@@ -61,6 +54,31 @@ public class Produit {
 		} finally {
 			cursor.close();
 		}
+		return jsonArrayProducts;
+	}
+	
+public JSONArray getInformationsProduitsCSV(String valeurCliquerDansListCategories, MongoCollection<Document> collectionProduct) throws JSONException{
+		
+		BasicDBObject regexQuery = new BasicDBObject();
+		regexQuery.put("categories_tags", valeurCliquerDansListCategories);
+		MongoCursor<Document> cursor = collectionProduct.find(regexQuery).iterator();
+
+		JSONArray jsonArrayProducts = new JSONArray();
+		
+		try {
+			while (cursor.hasNext()) {
+				Document product = cursor.next();
+				JSONObject jsonProduct = new JSONObject();
+				jsonProduct.put("id", product.getString("_id"));
+				jsonProduct.put("product_name", product.getString("product_name"));
+				jsonProduct.put("nutriments", product.get("nutriments"));
+				jsonProduct.put("brands", product.get("brands"));
+				jsonArrayProducts.put(jsonProduct);
+			}
+		} finally {
+			cursor.close();
+		}
+		return jsonArrayProducts;
 	}
 	
 }

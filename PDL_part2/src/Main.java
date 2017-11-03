@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import org.bson.Document;
+import org.json.JSONArray;
 import org.json.JSONException;
 
 import com.mongodb.client.MongoCollection;
@@ -98,6 +99,18 @@ public class Main {
 		
 	}
 	
+	public static JSONArray getInformationsCSV(String categorie){
+		JSONArray jsonArrayOfProducts = null;
+		try {
+			jsonArrayOfProducts = prod.getInformationsProduitsCSV(categorie, collectionProduct);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return jsonArrayOfProducts;
+	}
+	
+	
+	
 	public static void createCategoriesCollection(){
 		
 		GestionnaireCategories gestCategories = new GestionnaireCategories(categoriesCollection);
@@ -114,7 +127,7 @@ public class Main {
 			
 			//On insert cette arrayList dans la collection de Categories sur MongoDB
 			gestCategories.insertCategoriesInDataBase(arrayOfCategories);
-			System.out.println("Collection comportant toutes les categories créer !");
+			System.out.println("Collection comportant toutes les categories crée !");
 			
 		} catch (IOException | JSONException e) {
 			e.printStackTrace();

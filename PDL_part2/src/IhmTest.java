@@ -7,6 +7,8 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -16,6 +18,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -23,6 +26,9 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 
 public class IhmTest {
 	static String recherche = "";
@@ -62,6 +68,7 @@ public class IhmTest {
 		JButton btValider = new JButton("Valider");
 		JLabel resutats = new JLabel();
 		JLabel nbResultatsProduits = new JLabel();
+		JButton btGenererCSV = new JButton("Générer CSV");
 		
 		
 		//Caract�ristiques
@@ -82,6 +89,7 @@ public class IhmTest {
 		nbResultats.setVerticalAlignment(SwingConstants.TOP);
 		txtInput.setVisible(false);
 		btValider.setVisible(false);
+		btGenererCSV.setVisible(false);
 		setupAutoComplete(txtInput, Main.glc.getListCategoriesName());
 		txtInput.setColumns(30);
 //		resutats.setPreferredSize(new Dimension(300,100));
@@ -92,6 +100,7 @@ public class IhmTest {
 		frame.getContentPane().add(btRecherche);
 		frame.getContentPane().add(txtInput);
 		frame.getContentPane().add(btValider);
+		frame.getContentPane().add(btGenererCSV);
 		frame.getContentPane().add(nbResultats);
 		frame.getContentPane().add(nbResultatsProduits);
 		listProduits.setVisibleRowCount(17);
@@ -146,6 +155,36 @@ public class IhmTest {
 				frame.add(new JScrollPane(listProduits));
 				nbResultatsProduits.setText("Nombre de résultats : "+ String.valueOf(Main.glp.getSize()));
 				System.out.println("Nombre de résultats : "+ Main.glp.getSize());
+				btGenererCSV.setVisible(true);
+			}
+		});	
+		
+		btGenererCSV.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent ev) {
+				GestionnaireCSV csvGest = new GestionnaireCSV(",");
+				String categorieTag = Main.glc.getTagFromName(categorie);
+				Main.actionBoutonValider(categorieTag);
+				JSONArray arrayOfProducts = Main.getInformationsCSV(categorieTag);
+				
+				ArrayList<String> headersList = new ArrayList<String>();
+				headersList.add("id");
+				headersList.add("product_name");
+				headersList.add("brands");
+				
+				String nameOfFile="export.csv";
+				
+				try {
+					FileWriter csvFile = csvGest.createCSVFile(nameOfFile);
+					csvGest.addHeaders(csvFile, headersList);
+					csvGest.addDatas(csvFile, arrayOfProducts, headersList);
+					csvGest.closeCSVFile(csvFile);
+				} catch (IOException e) {
+					e.printStackTrace();
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+				JOptionPane.showMessageDialog(frame, "Fichier CSV \""+nameOfFile+"\" créé !");
 			}
 		});	
 	}
