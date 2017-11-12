@@ -20,10 +20,12 @@ public class Main {
 	private static MongoDatabase databaseOff;
 	private static MongoCollection<Document> categoriesCollection;
 	private static MongoCollection<Document> collectionProduct;
+	
 	//Creation de l'objet GestionListeCategorie
 	static GestionListeCategorie glc = new GestionListeCategorie();
 	//Creation de l'objet GestionListeProduit
 	static GestionListeProduit glp = new GestionListeProduit();
+
 	//Creation de l'objet IhmTest.
 	static IhmTest ihm = new IhmTest();
 	//Creation de l'objet Categorie.
