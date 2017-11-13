@@ -11,6 +11,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -219,6 +221,16 @@ public class IhmTest {
 				headersList.add("id");
 				headersList.add("product_name");
 				headersList.add("brands");
+				
+				HashMap<String, String> hash2 = Main.getListOfIngredients();
+				
+				
+
+				for(Map.Entry<String, String> entry : hash2.entrySet()) {
+				    String key = entry.getKey();
+				    String value = entry.getValue();
+				    headersList.add(key);
+				}
 				
 				String nameOfFile="export.csv";
 				

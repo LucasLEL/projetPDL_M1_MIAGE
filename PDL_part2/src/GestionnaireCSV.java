@@ -43,7 +43,7 @@ public class GestionnaireCSV {
 	 */
 	public void addHeaders(FileWriter csvFile, ArrayList<String> headersList) throws IOException{
 		for (int i = 0; i < headersList.size(); i++) {
-			this.addString(headersList.get(i), csvFile);
+			this.addString("\""+headersList.get(i)+"\"", csvFile);
 			if(i != headersList.size()-1){
 				this.addSeparator(csvFile);
 			}
@@ -66,11 +66,15 @@ public class GestionnaireCSV {
 				
 				for (int indexHeader = 0; indexHeader < headersList.size(); indexHeader++) {
 					
-					Object theInformation = product.get(headersList.get(indexHeader));
-					this.addString("\""+theInformation.toString()+"\"", csvFile);
-					if(indexHeader != headersList.size()-1){
-						this.addSeparator(csvFile);
+					if(headersList.get(indexHeader).equals("id") || headersList.get(indexHeader).equals("product_name") || headersList.get(indexHeader).equals("brands")){
+						Object theInformation = product.get(headersList.get(indexHeader));
+						this.addString("\""+theInformation.toString()+"\"", csvFile);
+						if(indexHeader != headersList.size()-1){
+							this.addSeparator(csvFile);
+						}
 					}
+					
+					
 				}
 				this.addNewLine(csvFile);
 			}

@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -109,6 +110,10 @@ public class Main {
 			e.printStackTrace();
 		}
 		return jsonArrayOfProducts;
+	}
+	
+	public static HashMap<String, String> getListOfIngredients(){
+		return prod.getHash2();
 	}
 	
 	
