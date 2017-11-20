@@ -222,15 +222,25 @@ public class IhmTest {
 				headersList.add("product_name");
 				headersList.add("brands");
 				
-				HashMap<String, String> hash2 = Main.getListOfIngredients();
+				HashMap<String, ArrayList<String>> hash1 = Main.getListOfProductsForEachIngredient();
 				
+				float nombreProduitsTotal = arrayOfProducts.length();
 				
-
-				for(Map.Entry<String, String> entry : hash2.entrySet()) {
-				    String key = entry.getKey();
-				    String value = entry.getValue();
-				    headersList.add(key);
+				for(Map.Entry<String, ArrayList<String>> entry : hash1.entrySet()) {
+				    String key = entry.getKey();	
+				    
+				    ArrayList<String> values = entry.getValue();
+				    
+				    float nbProducts = values.size();
+				    //Si le nombre de produits contenant un ingredient est supérieur à 3% du nombre total, et à un "id" non vide, on l'ajoute dans le header permettant de former le CSV
+				    
+				    float pourcentage = (nbProducts/nombreProduitsTotal)*100;
+				 
+				    if(pourcentage >= 3 && !key.isEmpty()){
+				    	headersList.add(key);
+				    }
 				}
+				
 				
 				String nameOfFile="export.csv";
 				

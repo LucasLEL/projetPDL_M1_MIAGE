@@ -112,10 +112,10 @@ public class Main {
 		return jsonArrayOfProducts;
 	}
 	
-	public static HashMap<String, String> getListOfIngredients(){
-		return prod.getHash2();
-	}
 	
+	public static HashMap<String, ArrayList<String>> getListOfProductsForEachIngredient(){
+		return prod.getHashIngredientsListProducts();
+	}
 	
 	
 	public static void createCategoriesCollection(){

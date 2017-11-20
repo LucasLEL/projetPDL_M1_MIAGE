@@ -66,13 +66,23 @@ public class GestionnaireCSV {
 				
 				for (int indexHeader = 0; indexHeader < headersList.size(); indexHeader++) {
 					
-					if(headersList.get(indexHeader).equals("id") || headersList.get(indexHeader).equals("product_name") || headersList.get(indexHeader).equals("brands")){
-						Object theInformation = product.get(headersList.get(indexHeader));
-						this.addString("\""+theInformation.toString()+"\"", csvFile);
-						if(indexHeader != headersList.size()-1){
-							this.addSeparator(csvFile);
+					//if(headersList.get(indexHeader).equals("id") || headersList.get(indexHeader).equals("product_name") || headersList.get(indexHeader).equals("brands")){
+						try{
+							Object theInformation = product.get(headersList.get(indexHeader));
+							this.addString("\""+theInformation.toString()+"\"", csvFile);
+							if(indexHeader != headersList.size()-1){
+								this.addSeparator(csvFile);
+							}
+						}catch (JSONException e){
+							this.addString("\""+"false"+"\"", csvFile);
+							if(indexHeader != headersList.size()-1){
+								this.addSeparator(csvFile);
+							}
 						}
-					}
+						
+						
+					//}
+					//if(headersList.get(indegredien))
 					
 					
 				}
