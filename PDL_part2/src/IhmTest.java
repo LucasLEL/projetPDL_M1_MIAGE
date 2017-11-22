@@ -221,8 +221,10 @@ public class IhmTest {
 				headersList.add("id");
 				headersList.add("product_name");
 				headersList.add("brands");
+				headersList.add("image");
 				
 				HashMap<String, ArrayList<String>> hash1 = Main.getListOfProductsForEachIngredient();
+				ArrayList<String> arrayOfNutriments = Main.getListOfNutriments(); 
 				
 				float nombreProduitsTotal = arrayOfProducts.length();
 				
@@ -240,6 +242,11 @@ public class IhmTest {
 				    	headersList.add(key);
 				    }
 				}
+				
+				for(String nutriment : arrayOfNutriments){
+					headersList.add(nutriment);
+				}
+				
 				
 				
 				String nameOfFile="export.csv";

@@ -17,6 +17,8 @@ import com.mongodb.client.MongoCursor;
 public class Produit {
 	
 	private HashMap<String, ArrayList<String>> hashIngredientsListProducts;
+	private HashMap<String, ArrayList<String>> hashNutrimentsListProducts;
+	private ArrayList<String> arrayNutriments;
 
 	public void affichageProduit(String valeurCliquerDansListCategories, MongoCollection<Document> collectionProduct,
 			GestionListeProduit glp) {
@@ -72,6 +74,8 @@ public class Produit {
 			
 			hashIngredientsListProducts = new HashMap<>(); //Id/ArrayList de Produits
 			
+			arrayNutriments = new ArrayList<String>();
+			
 			try {
 				while (cursor.hasNext()) {
 					Document product = cursor.next();
@@ -80,6 +84,7 @@ public class Produit {
 					jsonProduct.put("product_name", product.getString("product_name"));
 					jsonProduct.put("nutriments", product.get("nutriments"));
 					jsonProduct.put("brands", product.get("brands"));
+					jsonProduct.put("image", product.getString("image_small_url"));
 					
 					ArrayList<Document> listIngredients = (ArrayList<Document>) product.get("ingredients");
 					
@@ -100,6 +105,36 @@ public class Produit {
 							hashIngredientsListProducts.put(ingredient.get("id").toString(), listProductsContainedIngredient);
 						}
 					}
+					
+					Document nutriments = (Document) product.get("nutriments");
+					JSONObject jsonNutriments = new JSONObject(nutriments);
+					
+					if(jsonNutriments.length() >0){
+					
+						for(int i = 0; i<jsonNutriments.names().length(); i++){
+							
+							String key = jsonNutriments.names().getString(i);
+							String value = (String) String.valueOf(jsonNutriments.get(jsonNutriments.names().getString(i)));
+							
+						   jsonProduct.put(key,value);
+						   				   
+						   if(!arrayNutriments.contains(key)){
+							   arrayNutriments.add(key);
+								
+							}
+						   System.out.println("key = " + jsonNutriments.names().getString(i) + " value = " + jsonNutriments.get(jsonNutriments.names().getString(i)));
+						}				
+					   
+					}
+					
+
+					
+					//System.out.println(nutriments.toJson());
+					
+					//String nutriments = (String) 
+					
+					
+					
 					jsonArrayProducts.put(jsonProduct);
 				}
 			} finally {
@@ -115,4 +150,14 @@ public class Produit {
 	public void setHashIngredientsListProducts(HashMap<String, ArrayList<String>> hashIngredientsListProducts) {
 		this.hashIngredientsListProducts = hashIngredientsListProducts;
 	}
+
+	public ArrayList<String> getArrayNutriments() {
+		return arrayNutriments;
+	}
+
+	public void setArrayNutriments(ArrayList<String> arrayNutriments) {
+		this.arrayNutriments = arrayNutriments;
+	}
+	
 }
+

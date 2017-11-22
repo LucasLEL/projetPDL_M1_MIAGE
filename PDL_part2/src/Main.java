@@ -117,6 +117,9 @@ public class Main {
 		return prod.getHashIngredientsListProducts();
 	}
 	
+	public static ArrayList<String> getListOfNutriments(){
+		return prod.getArrayNutriments();
+	}
 	
 	public static void createCategoriesCollection(){
 		
