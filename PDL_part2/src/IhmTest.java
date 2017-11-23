@@ -72,7 +72,6 @@ public class IhmTest {
 		JLabel resutats = new JLabel();
 		JLabel nbResultatsProduits = new JLabel();
 		JButton btGenererCSV = new JButton("Générer CSV");
-		JButton btFilter = new JButton("Filtrer les résultats");
 		
 		
 		//Caract�ristiques
@@ -94,7 +93,6 @@ public class IhmTest {
 		txtInput.setVisible(false);
 		btValider.setVisible(false);
 		btGenererCSV.setVisible(false);
-		btFilter.setVisible(false);
 		setupAutoComplete(txtInput, Main.glc.getListCategoriesName());
 		txtInput.setColumns(30);
 //		resutats.setPreferredSize(new Dimension(300,100));
@@ -107,7 +105,6 @@ public class IhmTest {
 		frame.getContentPane().add(btValider);
 		frame.getContentPane().add(nbResultats);
 		frame.getContentPane().add(nbResultatsProduits);
-		frame.getContentPane().add(btFilter);
 		frame.getContentPane().add(btGenererCSV);
 		
 		
@@ -135,7 +132,6 @@ public class IhmTest {
 				//frame.getContentPane().remove(listProduits);
 				nbResultatsProduits.setText("");
 				btGenererCSV.setVisible(false);
-				btFilter.setVisible(false);
 //				listProduits.setVisible(false);
 			
 			}
@@ -168,46 +164,9 @@ public class IhmTest {
 				nbResultatsProduits.setText("Nombre de résultats : "+ String.valueOf(Main.glp.getSize()));
 				System.out.println("Nombre de résultats : "+ Main.glp.getSize());
 				btGenererCSV.setVisible(true);
-				btFilter.setVisible(true);
 			}
 		});	
 		
-		//ouvre une nouvelle fenetre et demande à l'utilisateur de selectionner les ingrédients que les 
-		//produits doivent possèder.
-		btFilter.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent ev) {
-				JFrame frameFilter = new JFrame();
-				frameFilter.setSize(300, 300);
-				frameFilter.setLocationRelativeTo(null);
-				frameFilter.setTitle("Filtre de produits");
-				frameFilter.setLayout(null);
-				frameFilter.setResizable(false);	
-				
-				
-				//Dans l'idée : 
-				//Affichage sur la fenetre de tous les ingrédients avec une checkbox (précochée)
-				//Si on décoche la case et on enregistre ça vire tous les produits avec l'élément concerné. 
-				
-				//Autre possibilité des "regles de gestion" avec deux listes déroulantes : 
-				// la 1ere : une liste d'action (contient / ne contient pas)
-				// la 2e : la liste des ingrédients. 
-				// Les produits affichés seront alors ceux qui contiennent ou ne contiennent pas les ingrédients indiqués.
-				//si aucune regle on affiche tout. 
-				
-	
-				listIngredients.setListData(new Object[0]);
-				listIngredients.setVisibleRowCount(10);
-				frameFilter.getContentPane().add(listIngredients);
-				frameFilter.add(new JScrollPane(listIngredients));
-				
-				//affichage ingrédients.
-				
-				frameFilter.setVisible(true);
-				
-			}
-
-		});
 		
 		btGenererCSV.addActionListener(new ActionListener() {
 			
