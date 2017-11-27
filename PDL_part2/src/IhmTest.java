@@ -1,6 +1,8 @@
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
@@ -53,30 +55,55 @@ public class IhmTest {
 			UnsupportedLookAndFeelException {
 		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		
-		//Cr�ation fenetre
 		JFrame frame = new JFrame();
-		frame.setSize(500, 450);
-		frame.setLocationRelativeTo(null);
-		frame.setTitle("PDL - OFF");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setLayout(null);
-		frame.setResizable(false);
-		
-		
-		//D�claration des �l�ments
 		JTextField txtRecherche = new JTextField();
 		JLabel nbResultats = new JLabel("", SwingConstants.CENTER);
 		JButton btRecherche = new JButton("Rechercher");
 		JTextField txtInput = new JTextField();
 		JButton btValider = new JButton("Valider");
-		JLabel resutats = new JLabel();
+		JLabel resultats = new JLabel();
+		JButton btInfo = new JButton("Informations");
 		JLabel nbResultatsProduits = new JLabel();
 		JButton btGenererCSV = new JButton("Générer CSV");
 		
 		
-		//Caract�ristiques
 		txtRecherche.setColumns(30);
+		nbResultats.setVerticalAlignment(SwingConstants.TOP);
+		txtInput.setVisible(false);
+		btValider.setVisible(false);
+		btGenererCSV.setVisible(false);
+		setupAutoComplete(txtInput, Main.glc.getListCategoriesName());
+		txtInput.setColumns(30);
 		
+		frame.setLayout(null);
+		frame.add(txtRecherche);
+		frame.add(btRecherche);
+		frame.add(nbResultats);
+		frame.add(txtInput);
+		frame.add(btValider);
+		frame.add(resultats);
+		frame.add(btGenererCSV);
+		frame.add(nbResultatsProduits);
+		frame.add(btInfo);
+		resultats.setLayout(new GridLayout());
+	
+		
+		txtRecherche.setBounds(10, 10, 400, 20);
+		btRecherche.setBounds(420, 10, 120, 20);
+		nbResultats.setBounds(10, 40, 200, 20);
+		txtInput.setBounds(10, 70, 400, 20);
+		btValider.setBounds(420, 70, 120, 20);
+		nbResultatsProduits.setBounds(10, 100, 400, 20);
+		resultats.setBounds(10, 130, 540, 200);
+		btGenererCSV.setBounds(420, 340, 120, 20);
+		btInfo.setBounds(10, 340, 120, 20);
+		
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setSize(560, 400);
+		frame.setTitle("PDL - OFF");
+		frame.setResizable(false);
+		frame.setVisible(true);
+		frame.setLocationRelativeTo(null);
 
 		txtRecherche.addKeyListener(new KeyAdapter() {
 			@Override
@@ -88,40 +115,11 @@ public class IhmTest {
 			}
 		});
 		
-		
-		nbResultats.setVerticalAlignment(SwingConstants.TOP);
-		txtInput.setVisible(false);
-		btValider.setVisible(false);
-		btGenererCSV.setVisible(false);
-		setupAutoComplete(txtInput, Main.glc.getListCategoriesName());
-		txtInput.setColumns(30);
-//		resutats.setPreferredSize(new Dimension(300,100));
-		
-		//ajout �l�ments sur fenetre
-		frame.getContentPane().setLayout(new FlowLayout());
-		frame.getContentPane().add(txtRecherche);
-		frame.getContentPane().add(btRecherche);
-		frame.getContentPane().add(txtInput);
-		frame.getContentPane().add(btValider);
-		frame.getContentPane().add(nbResultats);
-		frame.getContentPane().add(nbResultatsProduits);
-		frame.getContentPane().add(btGenererCSV);
-		
-		
-//		frame.getContentPane().add(resutats);
-		
-		
-		
-		
-//		nbResultats.setBounds(80, 180, 40, 20);
-//		resutats.setBounds(280, 250, 40, 20);
-		frame.setVisible(true);
-		
 		btRecherche.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent ev) {
 				txtInput.setText("");
-				resutats.setText("");
+				resultats.setText("");
 				txtInput.setVisible(true);
 				btValider.setVisible(true);
 				txtInput.requestFocus();
@@ -129,21 +127,40 @@ public class IhmTest {
 				recherche = txtRecherche.getText();
 				Main.actionBouton();
 				nbResultats.setText(String.valueOf(Main.glc.getSize()) + " catégories comportant le mot : " + recherche);
-				//frame.getContentPane().remove(listProduits);
 				nbResultatsProduits.setText("");
 				btGenererCSV.setVisible(false);
-//				listProduits.setVisible(false);
 			
 			}
 
+		});
+		
+		
+		btInfo.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent ev) {
+				JFrame frameInfo = new JFrame();
+				frameInfo.setSize(450, 150);
+				frameInfo.setTitle("PDL - OFF - Informations");
+				frameInfo.setResizable(false);
+				frameInfo.setVisible(true);
+				frameInfo.setLocationRelativeTo(null);
+				frameInfo.setLayout(null);
+				JLabel informations = new JLabel();
+				frameInfo.add(informations);
+				informations.setText("<html>Les données de l'appplication sont issues de Open Food Facts (https://world.openfoodfacts.org/). <br/> <br/>L'application à été "
+						+ "réalisée dans le cadre du module de Projet de Développement Logiciel (PDL) de M1 MIAGE à l'université de Rennes 1 par Vivien Busson, Lucas Lelièvre, "
+						+ "Olivier La Rivière, Clément Le Huërou et Vincent Pelletier. </html>");
+				informations.setBounds(10, 10, 430, 80);
+			}
 		});
 		
 		btValider.addActionListener(new ActionListener() {
 			@SuppressWarnings("null")
 			@Override
 			public void actionPerformed(ActionEvent ev) {
+				resultats.removeAll();
 				listProduits.setListData(new Object[0]);
-				resutats.setText("");
+				resultats.setText("");
 				categorie = txtInput.getText();
 				System.out.println("act = "+categorie);
 				// Retourne le tag lié à un name
@@ -159,8 +176,9 @@ public class IhmTest {
 				}
 				//Arrays.sort(tab); tri de la liste -> problème affichage, hypothèse -> caractères spéciaux
 				listProduits.setListData(tab);
-				frame.getContentPane().add(listProduits);
-				frame.add(new JScrollPane(listProduits));
+				resultats.add(listProduits);
+				
+				resultats.add(new JScrollPane(listProduits));
 				nbResultatsProduits.setText("Nombre de résultats : "+ String.valueOf(Main.glp.getSize()));
 				System.out.println("Nombre de résultats : "+ Main.glp.getSize());
 				btGenererCSV.setVisible(true);

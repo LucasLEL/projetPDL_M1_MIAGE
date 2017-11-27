@@ -124,11 +124,11 @@ public class Produit {
 				} else if (product.getString("_id").length() == 13) {
 					id_traitement = product.getString("_id").substring(0, 3) + "/"
 							+ product.getString("_id").substring(3, 6) + "/" + product.getString("_id").substring(6, 9)
-							+ "/" + product.getString("_id").substring(9, 13) + "/";
+							+ "/" + product.getString("_id").substring(9, 13);
 				}
 				String end_url = front_img + "." + rev_img + ".200.jpg";
 
-				url_image = base_url + id_traitement + end_url;
+				url_image = base_url + id_traitement + "/" + end_url;
 				
 				jsonProduct.put("image", url_image);
 				
