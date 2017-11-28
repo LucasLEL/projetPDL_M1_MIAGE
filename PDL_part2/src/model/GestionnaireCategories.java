@@ -1,18 +1,21 @@
+package model;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import com.mongodb.client.MongoCollection;
-
 import org.bson.Document;
 import org.json.JSONArray;
 
+/**
+ * Classe GestionnaireCategories 
+ * @author 17009228
+ *
+ */
 public class GestionnaireCategories {
 	
 	private static final String URL_API_CATEGORIES = "https://world.openfoodfacts.org/categories.json";

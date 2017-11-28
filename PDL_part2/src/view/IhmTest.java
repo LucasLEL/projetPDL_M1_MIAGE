@@ -1,7 +1,6 @@
+package view;
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,7 +11,6 @@ import java.awt.event.KeyEvent;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,6 +32,9 @@ import javax.swing.event.DocumentListener;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import controller.Controller;
+import model.GestionnaireCSV;
+
 public class IhmTest {
 	static String recherche = "";
 	static String categorie = "";
@@ -43,28 +44,40 @@ public class IhmTest {
 	static JList listProduits = new JList();
 	static JList listIngredients = new JList();
 	
-	public String getRecherche(){
-		return recherche;
+	private JFrame frame = new JFrame();
+	private JTextField txtRecherche = new JTextField();
+	private JLabel nbResultats = new JLabel("", SwingConstants.CENTER);
+	private JButton btRecherche = new JButton("Rechercher");
+	private JTextField txtInput = new JTextField();
+	private JButton btValider = new JButton("Valider");
+	private JLabel resultats = new JLabel();
+	private JButton btInfo = new JButton("Informations");
+	private JLabel nbResultatsProduits = new JLabel();
+	private JButton btGenererCSV = new JButton("Générer CSV");
+	
+	private Controller controller;
+	
+	public IhmTest(Controller controller){
+		this.controller = controller;
+		this.initialisaionFenetre();
+		try {
+			this.initialisationListenersIHM();
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
+			e.printStackTrace();
+		}
 	}
 	
-	public String getCategorie(){
-		return categorie;
-	}
-	@SuppressWarnings("unused")
-	static void recuperationData() throws ClassNotFoundException, InstantiationException, IllegalAccessException,
-			UnsupportedLookAndFeelException {
-		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		
-		JFrame frame = new JFrame();
-		JTextField txtRecherche = new JTextField();
-		JLabel nbResultats = new JLabel("", SwingConstants.CENTER);
-		JButton btRecherche = new JButton("Rechercher");
-		JTextField txtInput = new JTextField();
-		JButton btValider = new JButton("Valider");
-		JLabel resultats = new JLabel();
-		JButton btInfo = new JButton("Informations");
-		JLabel nbResultatsProduits = new JLabel();
-		JButton btGenererCSV = new JButton("Générer CSV");
+	private void initialisaionFenetre(){
+		this.frame = new JFrame();
+		this.txtRecherche = new JTextField();
+		this.nbResultats = new JLabel("", SwingConstants.CENTER);
+		this.btRecherche = new JButton("Rechercher");
+		this.txtInput = new JTextField();
+		this.btValider = new JButton("Valider");
+		this.resultats = new JLabel();
+		this.btInfo = new JButton("Informations");
+		this.nbResultatsProduits = new JLabel();
+		this.btGenererCSV = new JButton("Générer CSV");
 		
 		
 		txtRecherche.setColumns(30);
@@ -72,7 +85,7 @@ public class IhmTest {
 		txtInput.setVisible(false);
 		btValider.setVisible(false);
 		btGenererCSV.setVisible(false);
-		setupAutoComplete(txtInput, Main.glc.getListCategoriesName());
+		setupAutoComplete(txtInput, this.controller.getGlc().getListCategoriesName());
 		txtInput.setColumns(30);
 		
 		frame.setLayout(null);
@@ -104,6 +117,10 @@ public class IhmTest {
 		frame.setResizable(false);
 		frame.setVisible(true);
 		frame.setLocationRelativeTo(null);
+	}
+	
+	private void initialisationListenersIHM() throws ClassNotFoundException, InstantiationException, IllegalAccessException,UnsupportedLookAndFeelException {
+		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
 		txtRecherche.addKeyListener(new KeyAdapter() {
 			@Override
@@ -125,8 +142,8 @@ public class IhmTest {
 				txtInput.requestFocus();
 				frame.revalidate();
 				recherche = txtRecherche.getText();
-				Main.actionBouton();
-				nbResultats.setText(String.valueOf(Main.glc.getSize()) + " catégories comportant le mot : " + recherche);
+				controller.actionBouton(getRecherche());
+				nbResultats.setText(String.valueOf(controller.getGlc().getSize()) + " catégories comportant le mot : " + recherche);
 				nbResultatsProduits.setText("");
 				btGenererCSV.setVisible(false);
 			
@@ -164,14 +181,14 @@ public class IhmTest {
 				categorie = txtInput.getText();
 				System.out.println("act = "+categorie);
 				// Retourne le tag lié à un name
-				String tag = Main.glc.getTagFromName(categorie);
-				Main.actionBoutonValider(tag);
-				String[] tab = new String[Main.glp.getSize()];
+				String tag = controller.getGlc().getTagFromName(categorie);
+				controller.actionBoutonValider(tag);
+				String[] tab = new String[controller.getGlp().getSize()];
 				
-				for(int i = 0 ; i < Main.glp.getSize() ; i++)
+				for(int i = 0 ; i < controller.getGlp().getSize() ; i++)
 				{
 //					resutats.setText(resutats.getText() + " // " + Main.glp.getElement(i));
-					tab[i] = Main.glp.getElement(i);
+					tab[i] = controller.getGlp().getElement(i);
 					
 				}
 				//Arrays.sort(tab); tri de la liste -> problème affichage, hypothèse -> caractères spéciaux
@@ -179,8 +196,8 @@ public class IhmTest {
 				resultats.add(listProduits);
 				
 				resultats.add(new JScrollPane(listProduits));
-				nbResultatsProduits.setText("Nombre de résultats : "+ String.valueOf(Main.glp.getSize()));
-				System.out.println("Nombre de résultats : "+ Main.glp.getSize());
+				nbResultatsProduits.setText("Nombre de résultats : "+ String.valueOf(controller.getGlp().getSize()));
+				System.out.println("Nombre de résultats : "+ controller.getGlp().getSize());
 				btGenererCSV.setVisible(true);
 			}
 		});	
@@ -190,9 +207,9 @@ public class IhmTest {
 			
 			public void actionPerformed(ActionEvent ev) {
 				GestionnaireCSV csvGest = new GestionnaireCSV(",");
-				String categorieTag = Main.glc.getTagFromName(categorie);
-				Main.actionBoutonValider(categorieTag);
-				JSONArray arrayOfProducts = Main.getInformationsCSV(categorieTag);
+				String categorieTag = controller.getGlc().getTagFromName(categorie);
+				controller.actionBoutonValider(categorieTag);
+				JSONArray arrayOfProducts = controller.getInformationsCSV(categorieTag);
 				
 				ArrayList<String> headersList = new ArrayList<String>();
 				headersList.add("id");
@@ -200,8 +217,8 @@ public class IhmTest {
 				headersList.add("brands");
 				headersList.add("image");
 				
-				HashMap<String, ArrayList<String>> hash1 = Main.getListOfProductsForEachIngredient();
-				ArrayList<String> arrayOfNutriments = Main.getListOfNutriments(); 
+				HashMap<String, ArrayList<String>> hash1 = controller.getListOfProductsForEachIngredient();
+				ArrayList<String> arrayOfNutriments = controller.getListOfNutriments(); 
 				
 				float nombreProduitsTotal = arrayOfProducts.length();
 				
@@ -353,5 +370,13 @@ public class IhmTest {
 		}
 		cbInput.setPopupVisible(model.getSize() > 0);
 		setAdjusting(cbInput, false);
+	}
+	
+	public String getRecherche(){
+		return recherche;
+	}
+	
+	public String getCategorie(){
+		return categorie;
 	}
 }

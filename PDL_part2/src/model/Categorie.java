@@ -1,3 +1,4 @@
+package model;
 import org.bson.Document;
 
 import com.mongodb.BasicDBObject;
@@ -6,8 +7,7 @@ import com.mongodb.client.MongoCursor;
 
 public class Categorie {
 
-	public void rechercherMotCle(String valeurSaisieParUtilisateur, MongoCollection<Document> categoriesCollection,
-			GestionListeCategorie glc) {
+	public void rechercherMotCle(String valeurSaisieParUtilisateur, MongoCollection<Document> categoriesCollection, GestionListeCategorie glc) {
 		
 		BasicDBObject regexQuery = new BasicDBObject();
 		regexQuery.put("name", new BasicDBObject("$regex", valeurSaisieParUtilisateur));

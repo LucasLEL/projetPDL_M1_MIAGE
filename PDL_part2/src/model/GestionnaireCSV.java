@@ -1,3 +1,4 @@
+package model;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -66,7 +67,6 @@ public class GestionnaireCSV {
 				
 				for (int indexHeader = 0; indexHeader < headersList.size(); indexHeader++) {
 					
-					//if(headersList.get(indexHeader).equals("id") || headersList.get(indexHeader).equals("product_name") || headersList.get(indexHeader).equals("brands")){
 						try{
 							Object theInformation = product.get(headersList.get(indexHeader));
 							this.addString("\""+theInformation.toString()+"\"", csvFile);
@@ -78,13 +78,7 @@ public class GestionnaireCSV {
 							if(indexHeader != headersList.size()-1){
 								this.addSeparator(csvFile);
 							}
-						}
-						
-						
-					//}
-					//if(headersList.get(indegredien))
-					
-					
+						}					
 				}
 				this.addNewLine(csvFile);
 			}

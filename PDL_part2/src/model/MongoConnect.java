@@ -1,12 +1,10 @@
+package model;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoCursor;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
-import org.bson.Document;
 
 
 /**
