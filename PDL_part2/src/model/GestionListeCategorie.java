@@ -5,11 +5,6 @@ import java.util.HashMap;
 public class GestionListeCategorie {
 	private HashMap<String, String> mapCategories = new HashMap <String, String>();
 	private ArrayList<String> listCategoriesName = new ArrayList<String>();
-	//private String nomAvantSub = ""; 
-	
-//	public String getNomAvantSub(){
-//		return nomAvantSub;
-//	}
 
 	public void setMapCategories(HashMap<String, String> mapCategories) {
 		this.mapCategories = mapCategories;

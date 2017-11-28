@@ -1,11 +1,13 @@
 import java.io.IOException;
+
 import org.bson.Document;
+
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 
 import controller.Controller;
 import model.*;
-import view.IhmTest;
+import view.Ihm;
 
 /**
  * Classe Main de test, pour se connecter et tester la base de données MongoDB
@@ -33,11 +35,13 @@ public class Main {
 		categoriesCollection = databaseOff.getCollection("categories");
 		collectionProduct = databaseOff.getCollection("products");
 		
+		GestionnaireCategories gestCategories = new GestionnaireCategories(categoriesCollection);
 		GestionListeCategorie glc = new GestionListeCategorie();
 		GestionListeProduit glp = new GestionListeProduit();
+		GestionnaireCSV csvGest = new GestionnaireCSV(",");
 		Categorie cat = new Categorie();
 		Produit prod = new Produit();
-		Controller controller = new Controller(categoriesCollection,collectionProduct, glc, glp, prod, cat);
-		IhmTest ihm = new IhmTest(controller);
+		Controller controller = new Controller(categoriesCollection,collectionProduct, glc, glp, prod, cat, csvGest, gestCategories);
+		Ihm ihm = new Ihm(controller);
 	}
 }

@@ -2,17 +2,19 @@ package model;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+
 import org.bson.Document;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 
 /**
  * Classe Produit qui récupère des produits et leurs informations dans la base MongoDB
- *
+ * @author PDL_GROUPE7
  */
 public class Produit {
 
@@ -26,7 +28,6 @@ public class Produit {
 	 * @param glp : Liste permettant de stocker et d'afficher la liste des produits
 	 */
 	public void affichageProduit(String valeurCliquerDansListCategories, MongoCollection<Document> collectionProduct, GestionListeProduit glp) {
-
 		BasicDBObject regexQuery = new BasicDBObject();
 		regexQuery.put("categories_tags", valeurCliquerDansListCategories);
 		MongoCursor<Document> cursor = collectionProduct.find(regexQuery).iterator();

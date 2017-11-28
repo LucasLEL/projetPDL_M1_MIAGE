@@ -1,17 +1,15 @@
 package controller;
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-
+import java.util.Map;
 import org.bson.Document;
 import org.json.JSONArray;
 import org.json.JSONException;
-
 import com.mongodb.client.MongoCollection;
-
 import model.*;
-import view.IhmTest;
 
 public class Controller {
 	
@@ -21,19 +19,23 @@ public class Controller {
 	private GestionListeProduit glp;
 	private Produit produit;
 	private Categorie categorie;
-
+	private GestionnaireCSV csvGest;
+	private GestionnaireCategories gestCategories;
 
 	public Controller(MongoCollection<Document> categoriesCollection, MongoCollection<Document> collectionProduct,
-			GestionListeCategorie glc, GestionListeProduit glp, Produit produit, Categorie categorie) {
+			GestionListeCategorie glc, GestionListeProduit glp, Produit produit, Categorie categorie, GestionnaireCSV csvGest, GestionnaireCategories gestCategories) {
 		this.categoriesCollection = categoriesCollection;
 		this.collectionProduct = collectionProduct;
 		this.glc = glc;
 		this.glp = glp;
 		this.produit = produit;
 		this.categorie = categorie;
+		this.csvGest = csvGest;
+		this.gestCategories = gestCategories;
 	}
 	
-	public void actionBouton(String recherche ){
+	public void actionBoutonRechercher(String recherche ){
+		this.glc.cleanListCategorie();
 		this.categorie.rechercherMotCle(recherche, this.categoriesCollection, this.glc);
 	}
 	
@@ -41,6 +43,51 @@ public class Controller {
 	public void actionBoutonValider(String produit){
 		this.produit.affichageProduit(produit, this.collectionProduct, this.glp);
 		
+	}
+	
+	public String actionBoutonGenererCSV(String categorie){
+		csvGest = new GestionnaireCSV(",");
+		String categorieTag = this.glc.getTagFromName(categorie);
+		this.actionBoutonValider(categorieTag);
+		JSONArray arrayOfProducts = this.getInformationsCSV(categorieTag);
+		
+		ArrayList<String> headersList = new ArrayList<String>();
+		headersList.add("product_name");
+		headersList.add("id");
+		headersList.add("brands");
+		headersList.add("image");
+		
+		HashMap<String, ArrayList<String>> hash1 = this.getListOfProductsForEachIngredient();
+		ArrayList<String> arrayOfNutriments = this.getListOfNutriments(); 
+		
+		float nombreProduitsTotal = arrayOfProducts.length();
+		
+		for(Map.Entry<String, ArrayList<String>> entry : hash1.entrySet()) {
+		    String key = entry.getKey();	 
+		    ArrayList<String> values = entry.getValue();
+		    float nbProducts = values.size();
+		    //Si le nombre de produits contenant un ingredient est supérieur à 3% du nombre total, et à un "id" non vide, on l'ajoute dans le header permettant de former le CSV
+		    float pourcentage = (nbProducts/nombreProduitsTotal)*100;
+		    if(pourcentage >= 3 && !key.isEmpty()){
+		    	headersList.add(key);
+		    }
+		}
+		for(String nutriment : arrayOfNutriments){
+			headersList.add(nutriment);
+		}
+		String nameOfFile="export.csv";
+		
+		try {
+			FileWriter csvFile = csvGest.createCSVFile(nameOfFile);
+			csvGest.addHeaders(csvFile, headersList);
+			csvGest.addDatas(csvFile, arrayOfProducts, headersList);
+			csvGest.closeCSVFile(csvFile);
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return nameOfFile;
 	}
 	
 	public JSONArray getInformationsCSV(String categorie){
@@ -64,7 +111,6 @@ public class Controller {
 	
 	public void createCategoriesCollection(){
 		
-		GestionnaireCategories gestCategories = new GestionnaireCategories(this.categoriesCollection);
 		String jsonOfAllCategories=null;
 		try {
 			//On supprime l'ancienne collection de Categories si elle exsitait

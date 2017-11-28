@@ -107,5 +107,4 @@ public class GestionnaireCSV {
 	public void setSeparateurCSV(String separateurCSV) {
 		this.separateurCSV = separateurCSV;
 	}
-	
 }

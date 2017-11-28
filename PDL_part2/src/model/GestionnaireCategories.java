@@ -13,7 +13,7 @@ import org.json.JSONArray;
 
 /**
  * Classe GestionnaireCategories 
- * @author 17009228
+ * @author PDL_GROUPE7
  *
  */
 public class GestionnaireCategories {

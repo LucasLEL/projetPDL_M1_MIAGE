@@ -13,7 +13,6 @@ public class GestionListeProduit {
 	}
 
 	public void setListProduit(String produit) {
-//		produit = produit.substring(3, produit.length());
 		this.listProduit.add(produit);
 	}
 	

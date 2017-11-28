@@ -1,6 +1,5 @@
 package model;
 import org.bson.Document;
-
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
@@ -12,7 +11,6 @@ public class Categorie {
 		BasicDBObject regexQuery = new BasicDBObject();
 		regexQuery.put("name", new BasicDBObject("$regex", valeurSaisieParUtilisateur));
 	    MongoCursor<Document> cursor = categoriesCollection.find(regexQuery).iterator();
-		glc.cleanListCategorie();
 		try {
 			while (cursor.hasNext()) {
 				Document nextElem = cursor.next();
