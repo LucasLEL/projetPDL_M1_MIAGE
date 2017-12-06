@@ -5,17 +5,19 @@ Par Vivien Busson, Oliver La Rivière, Clément Le Huërou, Vincent Pelletier, L
 Ce projet s'associe à une base MongoDB (voir ci dessous pour l'établissement de la connexion) et à l'API d'Open Food Facts. 
 Au cours de l'utilisation, un fichier .csv pourra être généré sur demande de l'utilisateur permettant d'exporter ses données afin de les utiliser sous OpenCompare.org .
 
-<b>I/ Connexion à la base MongoDB : </u></b>
+<b>I/ Connexion à la base MongoDB : </b>
 
 - Après avoir récupéré les sources du projet depuis GitHub, ouvrez les dans un IDE tel que Eclipse. 
 - Vous devez une arborescence similaire à celle ci : 
 <p align="center">
   <img src="img/Screen_PDL_afterClone.png" width="350"/>
 </p>
-- Ouvrez le fichier "PDL_part2/config/config.properties". Remplacez les champs de type "your****" par les informations de votre base afin d'établir la connexion.
+
+- Ouvrez le fichier "PDLpart2/config/config.properties". Remplacez les champs de type "your****" par les informations de votre base afin d'établir la connexion.
 - Une fois les informations saisies, sauvegardez le fichier. 
 - Si vous avez bien l'arborescence indiqué au dessus, alors il vous reste une action à réaliser : replacer le répertoire "config" utilisé précédemment à la racine du projet.
 - Vous devez une arborescence similaire à celle ci : 
+
 <p align="center">
   <img src="img/Screen_PDL_good.png" width="350"/>
 </p>
