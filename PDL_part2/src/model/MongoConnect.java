@@ -4,7 +4,9 @@ import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoDatabase;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Properties;
+
 
 
 /**
@@ -14,7 +16,7 @@ import java.util.Properties;
  */
 public class MongoConnect {
 		
-	    private final String PATH_FILE_CONFIG="config/config.properties";
+	    private final String PATH_FILE_CONFIG="/config.properties";
 		private Properties prop;
 		private String host;
 		private String port;
@@ -56,7 +58,7 @@ public class MongoConnect {
 		 * @throws IOException
 		 */
 		private void loadFileProperties() throws IOException{
-			this.prop.load(new FileInputStream(PATH_FILE_CONFIG));
+			this.prop.load(MongoConnect.class.getResourceAsStream(PATH_FILE_CONFIG));
 			this.host = prop.getProperty("HOST");
 			this.port = prop.getProperty("PORT");
 			this.database_name = prop.getProperty("DATABASE_NAME");
