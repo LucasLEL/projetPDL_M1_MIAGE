@@ -306,4 +306,47 @@ public class Ihm {
 	public String getCategorie(){
 		return categorie;
 	}
+
+	public JTextField getTxtRecherche() {
+		return txtRecherche;
+	}
+
+	public void setTxtRecherche(JTextField txtRecherche) {
+		this.txtRecherche = txtRecherche;
+	}
+
+	public JTextField getTxtInput() {
+		return txtInput;
+	}
+
+	public void setTxtInput(JTextField txtInput) {
+		this.txtInput = txtInput;
+	}
+
+	public JButton getBtRecherche() {
+		return btRecherche;
+	}
+
+	public void setBtRecherche(JButton btRecherche) {
+		this.btRecherche = btRecherche;
+	}
+
+	public JButton getBtValider() {
+		return btValider;
+	}
+
+	public void setBtValider(JButton btValider) {
+		this.btValider = btValider;
+	}
+
+	public JButton getBtGenererCSV() {
+		return btGenererCSV;
+	}
+
+	public void setBtGenererCSV(JButton btGenererCSV) {
+		this.btGenererCSV = btGenererCSV;
+	}
+	
+	
+	
 }
