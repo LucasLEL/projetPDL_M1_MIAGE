@@ -2,6 +2,11 @@ package model;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * Classe GestionListeCategorie - Interactions avec les listes des catégories 
+ * @author PDL_GROUPE7
+ *
+ */
 public class GestionListeCategorie {
 	private HashMap<String, String> mapCategories = new HashMap <String, String>();
 	private ArrayList<String> listCategoriesName = new ArrayList<String>();

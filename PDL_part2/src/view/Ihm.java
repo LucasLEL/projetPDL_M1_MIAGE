@@ -9,6 +9,7 @@ import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -23,8 +24,14 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+
 import controller.Controller;
 
+/**
+ * Classe Ihm - Interface graphique de l'application
+ * @author PDL_GROUPE7
+ *
+ */
 public class Ihm {
 	
 	private JFrame frame;
@@ -42,12 +49,19 @@ public class Ihm {
 	private JList<Object> listProduits;
 	private Controller controller;
 	
+	/**
+	 * Contructeur de l'Ihm
+	 * @param controller
+	 */
 	public Ihm(Controller controller){
 		this.controller = controller;
 		this.initialisaionFenetre();
 		this.initialisationListenersIHM();
 	}
 	
+	/**
+	 * Méthode d'initialisation de la fenêtre et création des composants
+	 */
 	private void initialisaionFenetre(){
 		this.frame = new JFrame();
 		this.txtRecherche = new JTextField();
@@ -101,6 +115,9 @@ public class Ihm {
 		frame.setLocationRelativeTo(null);
 	}
 	
+	/**
+	 * Méthode qui traite les interactions entre l'application et l'utilisateur
+	 */
 	private void initialisationListenersIHM(){
 		
 		try {
@@ -109,6 +126,7 @@ public class Ihm {
 			e1.printStackTrace();
 		}
 
+		// Zone de saisie (pression touche clavier)
 		txtRecherche.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -119,6 +137,7 @@ public class Ihm {
 			}
 		});
 		
+		// Bouton de recherche (clic)
 		btRecherche.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent ev) {
@@ -138,6 +157,7 @@ public class Ihm {
 
 		});
 		
+		// Bouton d'informations (clic)
 		btInfo.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent ev) {
@@ -157,6 +177,7 @@ public class Ihm {
 			}
 		});
 		
+		// Bouton de validation d'une catégorie (clic)
 		btValider.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent ev) {
@@ -183,6 +204,7 @@ public class Ihm {
 			}
 		});	
 		
+		// Bouton de génération du .csv (clic)
 		btGenererCSV.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent ev) {
@@ -203,6 +225,11 @@ public class Ihm {
 		cbInput.putClientProperty("is_adjusting", adjusting);
 	}
 
+	/**
+	 * Méthode d'autocomplétion concernant le champ de catégorie (Second champ de saisie)
+	 * @param txtInput
+	 * @param items
+	 */
 	public void setupAutoComplete(final JTextField txtInput, final ArrayList<String> items) {
 		DefaultComboBoxModel<Object> model = new DefaultComboBoxModel<Object>();
 		JComboBox<Object> cbInput = new JComboBox<Object>(model) {
@@ -285,7 +312,13 @@ public class Ihm {
 		txtInput.add(cbInput, BorderLayout.SOUTH);
 	}
 	
-	
+	/**
+	 * Méthode de maj de la liste des propositions des catégories lors de l'autocomplétion
+	 * @param cbInput
+	 * @param items
+	 * @param txtInput
+	 * @param model
+	 */
 	public void updateList(JComboBox<Object> cbInput, ArrayList<String> items, JTextField txtInput, DefaultComboBoxModel<Object> model) {
 		setAdjusting(cbInput, true);
 		model.removeAllElements();

@@ -1,11 +1,10 @@
 package model;
+import java.io.IOException;
+import java.util.Properties;
+
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoDatabase;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.net.URL;
-import java.util.Properties;
 
 
 

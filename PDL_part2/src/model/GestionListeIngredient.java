@@ -1,6 +1,11 @@
 package model;
 import java.util.ArrayList;
 
+/**
+ * Classe GestionListeIngredient - Interactions avec la liste des ingrédients 
+ * @author PDL_GROUPE7
+ *
+ */
 public class GestionListeIngredient {
 	private ArrayList<String> listIngredients = new ArrayList<String>();
 	

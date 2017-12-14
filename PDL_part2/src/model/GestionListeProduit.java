@@ -1,6 +1,11 @@
 package model;
 import java.util.ArrayList;
 
+/**
+ * Classe GestionListeProduit - Interactions avec la liste des produits 
+ * @author PDL_GROUPE7
+ *
+ */
 public class GestionListeProduit {
 	private ArrayList<String> listProduit = new ArrayList<String>();
 

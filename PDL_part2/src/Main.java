@@ -6,7 +6,13 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 
 import controller.Controller;
-import model.*;
+import model.Categorie;
+import model.GestionListeCategorie;
+import model.GestionListeProduit;
+import model.GestionnaireCSV;
+import model.GestionnaireCategories;
+import model.MongoConnect;
+import model.Produit;
 import view.Ihm;
 
 /**

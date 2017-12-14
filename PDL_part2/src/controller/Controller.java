@@ -5,12 +5,25 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
 import org.bson.Document;
 import org.json.JSONArray;
 import org.json.JSONException;
-import com.mongodb.client.MongoCollection;
-import model.*;
 
+import com.mongodb.client.MongoCollection;
+
+import model.Categorie;
+import model.GestionListeCategorie;
+import model.GestionListeProduit;
+import model.GestionnaireCSV;
+import model.GestionnaireCategories;
+import model.Produit;
+
+/**
+ * Classe Controller qui appelle les principales fonctions de l'application
+ * @author PDL_GROUPE7
+ *
+ */
 public class Controller {
 	
 	private MongoCollection<Document> categoriesCollection;
@@ -22,6 +35,17 @@ public class Controller {
 	private GestionnaireCSV csvGest;
 	private GestionnaireCategories gestCategories;
 
+	/**
+	 * Constructeur de la classe
+	 * @param categoriesCollection
+	 * @param collectionProduct
+	 * @param glc
+	 * @param glp
+	 * @param produit
+	 * @param categorie
+	 * @param csvGest
+	 * @param gestCategories
+	 */
 	public Controller(MongoCollection<Document> categoriesCollection, MongoCollection<Document> collectionProduct,
 			GestionListeCategorie glc, GestionListeProduit glp, Produit produit, Categorie categorie, GestionnaireCSV csvGest, GestionnaireCategories gestCategories) {
 		this.categoriesCollection = categoriesCollection;
@@ -34,17 +58,28 @@ public class Controller {
 		this.gestCategories = gestCategories;
 	}
 	
+	/**
+	 * Méthode qui vide la liste catégorie et effectue une recherche à partir du mot en paramètre (recherche)
+	 * @param recherche
+	 */
 	public void actionBoutonRechercher(String recherche ){
 		this.glc.cleanListCategorie();
 		this.categorie.rechercherMotCle(recherche, this.categoriesCollection, this.glc);
 	}
 	
-
+	/**
+	 * Méthode qui appelle l'affichage de tous les produits de la catégorie "produit" passé en paramètre
+	 * @param produit
+	 */
 	public void actionBoutonValider(String produit){
 		this.produit.affichageProduit(produit, this.collectionProduct, this.glp);
 		
 	}
-	
+	/**
+	 * Méthode qui génère le fichier .csv avec les informations (Header, data, etc) à partir des différentes listes
+	 * @param categorie
+	 * @return le nom du fichier créé
+	 */
 	public String actionBoutonGenererCSV(String categorie){
 		csvGest = new GestionnaireCSV(",");
 		String categorieTag = this.glc.getTagFromName(categorie);
@@ -90,6 +125,11 @@ public class Controller {
 		return nameOfFile;
 	}
 	
+	/**
+	 * Méthode qui retourne toutes les informations d'un produit (Ingrédients + nutriments)
+	 * @param categorie
+	 * @return un json des informations des produits de la catégorie passé en paramètre.
+	 */
 	public JSONArray getInformationsCSV(String categorie){
 		JSONArray jsonArrayOfProducts = null;
 		try {
@@ -109,27 +149,6 @@ public class Controller {
 		return this.produit.getArrayNutriments();
 	}
 	
-	public void createCategoriesCollection(){
-		
-		String jsonOfAllCategories=null;
-		try {
-			//On supprime l'ancienne collection de Categories si elle exsitait
-			gestCategories.dropCollection();
-			
-			//On fait une requête HTTP sur l'API OpenFoodFact pour récupérer toutes les catégories en json
-			jsonOfAllCategories = gestCategories.getJsonCategories();
-			
-			//On Créer un arrayList de Catégories grâce au json passé en paramètre
-			ArrayList<Document> arrayOfCategories = gestCategories.getArrayListOfCategories(jsonOfAllCategories);
-			
-			//On insert cette arrayList dans la collection de Categories sur MongoDB
-			gestCategories.insertCategoriesInDataBase(arrayOfCategories);
-			System.out.println("Collection comportant toutes les categories crée !");
-			
-		} catch (IOException | JSONException e) {
-			e.printStackTrace();
-		}
-	}
 
 	public MongoCollection<Document> getCategoriesCollection() {
 		return categoriesCollection;

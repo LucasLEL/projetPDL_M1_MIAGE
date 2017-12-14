@@ -5,11 +5,13 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
-import org.json.JSONException;
-import org.json.JSONObject;
-import com.mongodb.client.MongoCollection;
+
 import org.bson.Document;
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.mongodb.client.MongoCollection;
 
 /**
  * Classe GestionnaireCategories 
