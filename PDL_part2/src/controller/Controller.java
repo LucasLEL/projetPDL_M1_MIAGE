@@ -86,18 +86,24 @@ public class Controller {
 		this.actionBoutonValider(categorieTag);
 		JSONArray arrayOfProducts = this.getInformationsCSV(categorieTag);
 		
+		ArrayList<String> headersListMatches = new ArrayList<String>();
 		ArrayList<String> headersList = new ArrayList<String>();
 		headersList.add("product_name");
+		headersListMatches.add("nameOfProduct");
 		headersList.add("id");
+		headersListMatches.add("idOfProduct");
 		headersList.add("brands");
+		headersListMatches.add("brandOfProduct");
 		headersList.add("image");
+		headersListMatches.add("imageOfProduct");
 		
-		HashMap<String, ArrayList<String>> hash1 = this.getListOfProductsForEachIngredient();
+		
+		HashMap<String, ArrayList<String>> hashMapOfProductForEachIngredient = this.getListOfProductsForEachIngredient();
 		ArrayList<String> arrayOfNutriments = this.getListOfNutriments(); 
 		
 		float nombreProduitsTotal = arrayOfProducts.length();
 		
-		for(Map.Entry<String, ArrayList<String>> entry : hash1.entrySet()) {
+		for(Map.Entry<String, ArrayList<String>> entry : hashMapOfProductForEachIngredient.entrySet()) {
 		    String key = entry.getKey();	 
 		    ArrayList<String> values = entry.getValue();
 		    float nbProducts = values.size();
@@ -105,17 +111,19 @@ public class Controller {
 		    float pourcentage = (nbProducts/nombreProduitsTotal)*100;
 		    if(pourcentage >= 3 && !key.isEmpty()){
 		    	headersList.add(key);
+		    	headersListMatches.add("ingredient");
 		    }
 		}
 		for(String nutriment : arrayOfNutriments){
 			headersList.add(nutriment);
+			headersListMatches.add("nutriment");
 		}
 		String nameOfFile="export.csv";
 		
 		try {
 			FileWriter csvFile = csvGest.createCSVFile(nameOfFile);
 			csvGest.addHeaders(csvFile, headersList);
-			csvGest.addDatas(csvFile, arrayOfProducts, headersList);
+			csvGest.addDatas(csvFile, arrayOfProducts, headersList, headersListMatches);
 			csvGest.closeCSVFile(csvFile);
 		} catch (IOException e) {
 			e.printStackTrace();

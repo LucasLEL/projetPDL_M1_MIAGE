@@ -58,10 +58,11 @@ public class GestionnaireCSV {
 	 * @param csvFile : le FileWriter
 	 * @param jsonArrayDatas : le JSONArray contenant les données à insérer dans le fichier CSV
 	 * @param headersList : l'arrayList de headers sous forme de string
+	 * @param headersListMatches : l'arrayList de correspondance des headers (permettant de definir si un header est un ingredient ou un nutriment)
 	 * @throws IOException
 	 * @throws JSONException
 	 */
-	public void addDatas(FileWriter csvFile, JSONArray jsonArrayDatas, ArrayList<String> headersList) throws IOException, JSONException{
+	public void addDatas(FileWriter csvFile, JSONArray jsonArrayDatas, ArrayList<String> headersList, ArrayList<String> headersListMatches) throws IOException, JSONException{
 		
 			for (int indexDatas=0; indexDatas < jsonArrayDatas.length(); indexDatas++) {
 				JSONObject product = jsonArrayDatas.getJSONObject(indexDatas);
@@ -75,7 +76,11 @@ public class GestionnaireCSV {
 								this.addSeparator(csvFile);
 							}
 						}catch (JSONException e){
-							this.addString("\""+"false"+"\"", csvFile);
+							
+							if (headersListMatches.get(indexHeader).equals("ingredient")) this.addString("\""+"false"+"\"", csvFile);
+							else if(headersListMatches.get(indexHeader).equals("nutriment")) this.addString("\"\"", csvFile);
+							else this.addString("\""+"false"+"\"", csvFile);
+							
 							if(indexHeader != headersList.size()-1){
 								this.addSeparator(csvFile);
 							}
